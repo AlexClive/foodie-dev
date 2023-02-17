@@ -1,5 +1,6 @@
 package com.imooc.service.Impl;
 
+import com.imooc.enums.CateType;
 import com.imooc.mapper.CategoryMapper;
 import com.imooc.pojo.Category;
 import com.imooc.service.CategoryService;
@@ -20,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("type",1);
+        criteria.andEqualTo("type", CateType.oneClass.type);
         List<Category> result = categoryMapper.selectByExample(example);
         return result;
     }
