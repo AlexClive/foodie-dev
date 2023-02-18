@@ -4,6 +4,7 @@ import com.imooc.enums.YseOrNo;
 import com.imooc.pojo.Carousel;
 import com.imooc.pojo.Category;
 import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.NewItemsVO;
 import com.imooc.service.CarouselService;
 import com.imooc.service.CategoryService;
 import com.imooc.utils.IMOOCJSONResult;
@@ -60,6 +61,18 @@ public class IndexController {
             return IMOOCJSONResult.errorMsg("参数不能为空");
         }
         List<CategoryVO> list = categoryService.getSubCatList(rootCatId);
+        return IMOOCJSONResult.ok(list);
+    }
+
+    @ApiOperation(value = "获取每个一级分类下的商品列表信息", notes = "获取每个一级分类下的商品列表信息", httpMethod = "GET")
+    @GetMapping("/sixNewItems/{rootCatId}")
+    public IMOOCJSONResult sixNewItems(
+            @ApiParam(name = "rootCatId", value="一级分类id",required = true)
+            @PathVariable Integer rootCatId) {
+        if(rootCatId == null){
+            return IMOOCJSONResult.errorMsg("参数不能为空");
+        }
+        List<NewItemsVO> list = categoryService.getSixNewItemsLazy(rootCatId);
         return IMOOCJSONResult.ok(list);
     }
 }
