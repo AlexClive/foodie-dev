@@ -14,7 +14,7 @@ public interface CategoryService {
     public List<Category> queryAllRootLevelCat();
 
     /**
-     * @desc 根据一级分类id 查询二级分类
+     * 根据一级分类id 查询二级分类
      * @param rootCatId
      * @return
      */
