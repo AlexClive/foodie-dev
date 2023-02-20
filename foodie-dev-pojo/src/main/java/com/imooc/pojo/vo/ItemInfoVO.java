@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 商品详情VO
  */
-public class ItemInfoVo {
+public class ItemInfoVO {
     private Items items;
     private List<ItemsImg> itemsImgList;
     private List<ItemsSpec> itemsSpecList;

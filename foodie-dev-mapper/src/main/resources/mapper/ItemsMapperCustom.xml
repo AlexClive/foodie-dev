@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.imooc.mapper.ItemsMapperCustom">
+
+    <select id="queryItemComments" parameterType="Map" resultType="com.imooc.pojo.vo.ItemCommentVO">
+        SELECT
+        ic.comment_level as commentLevel,
+        ic.content as content,
+        ic.sepc_name as specName,
+        ic.created_time as createdTime,
+        u.face as userFace,
+        u.nickname as nickname
+        FROM
+        items_comments ic
+        LEFT JOIN
+        users as u
+        ON
+        ic.user_id = u.id
+        WHERE
+        ic.item_id = #{paramMap.itemId}
+        <if test="paramMap.level != null and paramMap.level != ''">
+            AND ic.comment_level = #{paramMap.level}
+        </if>
+
+    </select>
+
+    <select id="searchItems" parameterType="Map" resultType="com.imooc.pojo.vo.SearchItemsVO">
+        SELECT i.id                    as itemId,
+               i.item_name             as itemName,
+               i.sell_counts           as sellCounts,
+               ii.url                  as imgUrl,
+               tempSpec.price_discount as price
+        FROM Items i
+                 LEFT JOIN
+             items_img ii
+             on
+                 i.id = ii.item_id
+                 LEFT JOIN (SELECT item_id, MIN(price_discount) as price_discount
+                            from items_spec
+                            GROUP BY item_id) tempSpec
+                           on
+                               i.id = tempSpec.item_id
+        WHERE ii.is_main = 1
+            <if test="paramMap.keywords != null and paramMap.keywords != ''">
+                AND i.item_name like %${paramMap.keywords}%
+            </if>
+        order by
+            <choose>
+                <when test="paramMap.sort == &quot;c&quot;">
+                    i.sell_counts desc
+                </when>
+                <when test="paramMap.sort == &quot;p&quot;">
+                    tempSpec.price_discount desc
+                </when>
+                <when test="paramMap.sort == &quot;k&quot;">
+                    i.item_name desc
+                </when>
+            </choose>
+
+    </select>
+</mapper>
