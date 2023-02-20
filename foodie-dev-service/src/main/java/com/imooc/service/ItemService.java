@@ -64,4 +64,5 @@ public interface ItemService {
      * @return
      */
     public PagedGridResult searchItems(String keyWords, String sort, Integer page, Integer pageSize);
+    public PagedGridResult searchItemsByThirdCat(String catId, String sort, Integer page, Integer pageSize);
 }

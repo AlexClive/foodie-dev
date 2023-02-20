@@ -107,7 +107,7 @@ public class ItemServiceImpl implements ItemService {
         }
         return setterPageGrid(list, page);
     }
-
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public PagedGridResult searchItems(String keyWords, String sort, Integer page, Integer pageSize) {
         Map<String, Object> map = new HashMap<>();
@@ -116,6 +116,17 @@ public class ItemServiceImpl implements ItemService {
         // mybatis-pagehelper
         PageHelper.startPage(page, pageSize);
         List<SearchItemsVO> list = itemsMapperCustom.searchItems(map);
+        return setterPageGrid(list, page);
+    }
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItemsByThirdCat(String catId, String sort, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("catId", catId);
+        map.put("sort", sort);
+        // mybatis-pagehelper
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemsVO> list = itemsMapperCustom.searchItemsByThirdCat(map);
         return setterPageGrid(list, page);
     }
 
