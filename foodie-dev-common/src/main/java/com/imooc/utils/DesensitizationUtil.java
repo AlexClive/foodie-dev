@@ -1,6 +1,5 @@
 package com.imooc.utils;
 
-
 /**
  * 通用脱敏工具类
  * 可用于：
