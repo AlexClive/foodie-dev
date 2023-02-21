@@ -6,6 +6,7 @@ import com.imooc.pojo.ItemsParam;
 import com.imooc.pojo.ItemsSpec;
 import com.imooc.pojo.vo.CommentLevelCountsVO;
 import com.imooc.pojo.vo.ItemInfoVO;
+import com.imooc.pojo.vo.ShopCatVO;
 import com.imooc.service.ItemService;
 import com.imooc.utils.IMOOCJSONResult;
 import com.imooc.utils.PagedGridResult;
@@ -41,10 +42,10 @@ public class ItemController extends BaseController {
         ItemsParam itemsParam = itemService.queryItemParam(itemId);
 
         ItemInfoVO itemInfoVo = new ItemInfoVO();
-        itemInfoVo.setItems(items);
-        itemInfoVo.setItemsImgList(itemsImgsList);
+        itemInfoVo.setItem(items);
+        itemInfoVo.setItemImgList(itemsImgsList);
         itemInfoVo.setItemsSpecList(itemsSpecList);
-        itemInfoVo.setItemsParam(itemsParam);
+        itemInfoVo.setItemParams(itemsParam);
         return IMOOCJSONResult.ok(itemInfoVo);
     }
 
@@ -92,11 +93,11 @@ public class ItemController extends BaseController {
         return IMOOCJSONResult.ok(grid);
     }
 
-    @ApiOperation(value = "商品搜索", notes = "商品搜索", httpMethod = "POST")
-    @PostMapping("/search")
+    @ApiOperation(value = "商品搜索", notes = "商品搜索", httpMethod = "GET")
+    @GetMapping("/search")
     public IMOOCJSONResult search(
-            @ApiParam(name = "keyWords", value = "关键词", readOnly = true)
-            @RequestParam String keyWords,
+            @ApiParam(name = "keywords", value = "关键词", readOnly = true)
+            @RequestParam String keywords,
             @ApiParam(name = "sort", value = "排序", readOnly = false)
             @RequestParam String sort,
             @ApiParam(name = "page", value = "第几页", readOnly = false)
@@ -104,7 +105,7 @@ public class ItemController extends BaseController {
             @ApiParam(name = "pageSize", value = "多少列", readOnly = false)
             @RequestParam Integer pageSize
     ) {
-        if (StringUtils.isBlank(keyWords)) {
+        if (StringUtils.isBlank(keywords)) {
             return IMOOCJSONResult.errorMsg("商品名称不能为空");
         }
         if (page == null) {
@@ -114,11 +115,12 @@ public class ItemController extends BaseController {
             pageSize = COMMENT_PAGE_SIZE;
         }
 
-        PagedGridResult grid = itemService.searchItems(keyWords, sort, page, pageSize);
+        PagedGridResult grid = itemService.searchItems(keywords, sort, page, pageSize);
 
 
         return IMOOCJSONResult.ok(grid);
     }
+
     @ApiOperation(value = "根据分类id查询商品", notes = "根据分类id查询商品", httpMethod = "POST")
     @PostMapping("/catItems")
     public IMOOCJSONResult catItems(
@@ -146,5 +148,29 @@ public class ItemController extends BaseController {
 
         return IMOOCJSONResult.ok(grid);
     }
+
+    /**
+     * 用于用户长时间未登录网站，刷新购物车中的数据。
+     *
+     * @param catId
+     * @param sort
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @ApiOperation(value = "根据规格id查询最新的商品数据", notes = "根据规格id查询最新的商品数据", httpMethod = "GET")
+    @GetMapping("/refresh")
+    public IMOOCJSONResult refresh(
+            @ApiParam(name = "itemSpecIds", value = "分类id", readOnly = true)
+            @RequestParam String itemSpecIds
+    ) {
+        if (StringUtils.isBlank(itemSpecIds)) {
+            return IMOOCJSONResult.errorMsg("商品规格id不能为空");
+        }
+        List<ShopCatVO> list = itemService.queryItemsBySpecIds(itemSpecIds);
+
+        return IMOOCJSONResult.ok(list);
+    }
+
 
 }

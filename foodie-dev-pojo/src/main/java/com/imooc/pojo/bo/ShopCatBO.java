@@ -2,20 +2,20 @@ package com.imooc.pojo.bo;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class shopCatBo {
-    @ApiModelProperty(value = "商品图片地址",name="itemImgUrl",example = "imooc",required = true)
+public class ShopCatBO {
+    @ApiModelProperty(value = "商品图片",name="itemImgUrl",example = "imooc",required = true)
     private String itemImgUrl;
     @ApiModelProperty(value = "商品名称",name="itemName",example = "imooc",required = true)
     private String itemName;
-    @ApiModelProperty(value = "商品id",name="specId",example = "imooc",required = true)
+    @ApiModelProperty(value = "规格id",name="specId",example = "1",required = true)
     private String specId;
-    @ApiModelProperty(value = "specName",name="specName",example = "imooc",required = true)
+    @ApiModelProperty(value = "规格名称",name="specName",example = "imooc",required = true)
     private String specName;
-    @ApiModelProperty(value = "商品id",name="buyCounts",example = "1",required = true)
+    @ApiModelProperty(value = "购买计数",name="buyCounts",example = "1",required = true)
     private Integer buyCounts;
-    @ApiModelProperty(value = "priceDiscount",name="priceDiscount",example = "priceDiscount",required = true)
+    @ApiModelProperty(value = "价格折扣",name="priceDiscount",example = "100",required = true)
     private String priceDiscount;
-    @ApiModelProperty(value = "priceNormal",name="priceNormal",example = "imooc",required = true)
+    @ApiModelProperty(value = "价格正常",name="priceNormal",example = "150",required = true)
     private String priceNormal;
 
     public String getItemImgUrl() {
