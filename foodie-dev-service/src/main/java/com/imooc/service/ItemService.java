@@ -15,14 +15,14 @@ public interface ItemService {
 
     /**
      * 根据商品id查询
-     * @param id
+     * @param itemId
      * @return
      */
     public Items queryItemById(String itemId);
 
     /**
      * 根据商品id查询商品图片列表
-     * @param id
+     * @param itemId
      * @return
      */
     public List<ItemsImg> queryitemImgList(String itemId);
@@ -50,8 +50,10 @@ public interface ItemService {
 
     /**
      * 根据商品id查询商品的评价(分页)
-     * @param ItemId
+     * @param itemId
      * @param level
+     * @param page
+     * @param pageSize
      * @return
      */
     public PagedGridResult queryPageComments(String itemId, Integer level, Integer page, Integer pageSize);
@@ -73,4 +75,20 @@ public interface ItemService {
      * @return
      */
     public List<ShopCatVO> queryItemsBySpecIds(String specIds);
+
+    /**
+     * 根据商品规格id获取规格对象的具体信息
+     * @param specId
+     * @return
+     */
+    public ItemsSpec queryItemSpecById(String specId);
+
+    /**
+     * 根据商品规格获取商品的主图
+     * @param itemId
+     * @return
+     */
+    public String queryItemMainImgById(String itemId);
+
+    public void decreaseItemSpecStock(String specId, Integer buyCount);
 }
