@@ -1,7 +1,6 @@
 package com.imooc.controller;
 
 import com.imooc.enums.PayMethod;
-import com.imooc.pojo.OrderItems;
 import com.imooc.pojo.bo.SubmitOrderBO;
 import com.imooc.service.OrderServer;
 import com.imooc.utils.IMOOCJSONResult;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Objects;
 
 @Api(value = "订单相关", tags = {"订单相关的api"})
 @RequestMapping("orders")
@@ -27,7 +28,7 @@ public class OrdersController {
     public IMOOCJSONResult create(
             @RequestBody SubmitOrderBO submitOrderBO
     ) {
-        if (submitOrderBO.getPayMethod().equals(PayMethod.WEIXIN.value) && submitOrderBO.getPayMethod().equals(PayMethod.ALIPAY.value)) {
+        if (!Objects.equals(submitOrderBO.getPayMethod(), PayMethod.WEIXIN.type) && !Objects.equals(submitOrderBO.getPayMethod(), PayMethod.ALIPAY.type)) {
             return IMOOCJSONResult.errorMsg("支付方式不支持");
         }
         System.out.println(submitOrderBO.toString());

@@ -13,6 +13,8 @@ import com.imooc.service.OrderServer;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -34,6 +36,7 @@ public class OrderServerImpl implements OrderServer {
     @Autowired
     private Sid sid;
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void createOder(SubmitOrderBO submitOrderBO) {
         String userId = submitOrderBO.getUserId();
@@ -68,7 +71,7 @@ public class OrderServerImpl implements OrderServer {
         Integer realPayAmount = 0;// 优惠后的实际价格累计
         for (String itemSpecId : itemSpecIdArr) {
             // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 979;
+            int buyCounts = 1;
             // 2.1根据规格id，查询规格的具体信息
             ItemsSpec itemsSpec = itemService.queryItemSpecById(itemSpecId);
             totalAmount += itemsSpec.getPriceNormal() * buyCounts;

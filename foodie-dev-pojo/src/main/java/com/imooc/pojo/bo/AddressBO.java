@@ -1,7 +1,6 @@
 package com.imooc.pojo.bo;
 
 import io.swagger.annotations.ApiModelProperty;
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 用于新增或修改地址的BO
