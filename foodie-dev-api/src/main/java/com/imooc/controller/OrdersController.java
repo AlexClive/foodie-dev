@@ -30,22 +30,22 @@ public class OrdersController extends BaseController{
     @PostMapping("create")
     public IMOOCJSONResult create(
             @RequestBody SubmitOrderBO submitOrderBO,
-            HttpServletResponse response,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         if (!Objects.equals(submitOrderBO.getPayMethod(), PayMethod.WEIXIN.type) && !Objects.equals(submitOrderBO.getPayMethod(), PayMethod.ALIPAY.type)) {
             return IMOOCJSONResult.errorMsg("支付方式不支持");
         }
-        System.out.println(submitOrderBO.toString());
+       // System.out.println(submitOrderBO.toString());
 
         // 1、创建订单
-        orderServer.createOder(submitOrderBO);
+        String orderId = orderServer.createOder(submitOrderBO);
         // 2、创建订单之后，移除购物车中已结算的商品
         // TODO 整合redis之后，完善购物车中已结算商品清除，并且同步到前端的cookie
-        // CookieUtils.setCookie(request,response,FOODIE_SHOPCART);
+        CookieUtils.setCookie(request,response,FOODIE_SHOP_CART,"",true);
         // 3、向支付中心发送当前订单，用于保存支付中心的商品数据
 
 
-        return IMOOCJSONResult.ok();
+        return IMOOCJSONResult.ok(orderId);
     }
 }

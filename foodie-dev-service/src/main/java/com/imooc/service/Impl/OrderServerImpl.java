@@ -38,7 +38,7 @@ public class OrderServerImpl implements OrderServer {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void createOder(SubmitOrderBO submitOrderBO) {
+    public String createOder(SubmitOrderBO submitOrderBO) {
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
         String itemSpecIds = submitOrderBO.getItemSpecIds();
@@ -66,9 +66,9 @@ public class OrderServerImpl implements OrderServer {
         newOrder.setUpdatedTime(new Date());
 
         // 2、循环根据itemSpecIds保存订单商品信息
-        String itemSpecIdArr[] = itemSpecIds.split(",");
-        Integer totalAmount = 0; //商品原价累计
-        Integer realPayAmount = 0;// 优惠后的实际价格累计
+        String[] itemSpecIdArr = itemSpecIds.split(",");
+        int totalAmount = 0; //商品原价累计
+        int realPayAmount = 0;// 优惠后的实际价格累计
         for (String itemSpecId : itemSpecIdArr) {
             // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
             int buyCounts = 1;
@@ -107,5 +107,6 @@ public class OrderServerImpl implements OrderServer {
         waitPayOrderStatus.setOrderStatus(OderStatuEnum.WAII_PAY.type);
         waitPayOrderStatus.setCreatedTime(new Date());
         orderStatusMapper.insert(waitPayOrderStatus);
+        return oderId;
     }
 }
