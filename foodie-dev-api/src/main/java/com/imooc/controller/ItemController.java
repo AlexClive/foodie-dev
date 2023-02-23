@@ -70,11 +70,11 @@ public class ItemController extends BaseController {
     public IMOOCJSONResult comments(
             @ApiParam(name = "itemId", value = "商品id", readOnly = true)
             @RequestParam String itemId,
-            @ApiParam(name = "level", value = "商品评价等级", readOnly = false)
+            @ApiParam(name = "level", value = "商品评价等级")
             @RequestParam Integer level,
-            @ApiParam(name = "page", value = "第几页", readOnly = false)
+            @ApiParam(name = "page", value = "第几页")
             @RequestParam Integer page,
-            @ApiParam(name = "pageSize", value = "多少列", readOnly = false)
+            @ApiParam(name = "pageSize", value = "多少列")
             @RequestParam Integer pageSize
     ) {
         if (StringUtils.isBlank(itemId)) {
@@ -98,11 +98,11 @@ public class ItemController extends BaseController {
     public IMOOCJSONResult search(
             @ApiParam(name = "keywords", value = "关键词", readOnly = true)
             @RequestParam String keywords,
-            @ApiParam(name = "sort", value = "排序", readOnly = false)
+            @ApiParam(name = "sort", value = "排序")
             @RequestParam String sort,
-            @ApiParam(name = "page", value = "第几页", readOnly = false)
+            @ApiParam(name = "page", value = "第几页")
             @RequestParam Integer page,
-            @ApiParam(name = "pageSize", value = "多少列", readOnly = false)
+            @ApiParam(name = "pageSize", value = "多少列")
             @RequestParam Integer pageSize
     ) {
         if (StringUtils.isBlank(keywords)) {
@@ -126,11 +126,11 @@ public class ItemController extends BaseController {
     public IMOOCJSONResult catItems(
             @ApiParam(name = "catId", value = "分类id", readOnly = true)
             @RequestParam String catId,
-            @ApiParam(name = "sort", value = "排序", readOnly = false)
+            @ApiParam(name = "sort", value = "排序")
             @RequestParam String sort,
-            @ApiParam(name = "page", value = "第几页", readOnly = false)
+            @ApiParam(name = "page", value = "第几页")
             @RequestParam Integer page,
-            @ApiParam(name = "pageSize", value = "多少列", readOnly = false)
+            @ApiParam(name = "pageSize", value = "多少列")
             @RequestParam Integer pageSize
     ) {
         if (StringUtils.isBlank(catId)) {
@@ -140,7 +140,7 @@ public class ItemController extends BaseController {
             page = 1;
         }
         if (pageSize == null) {
-            pageSize = COMMENT_PAGE_SIZE;
+            pageSize = PAGE_SIZE;
         }
 
         PagedGridResult grid = itemService.searchItemsByThirdCat(catId, sort, page, pageSize);
@@ -149,14 +149,11 @@ public class ItemController extends BaseController {
         return IMOOCJSONResult.ok(grid);
     }
 
+
     /**
      * 用于用户长时间未登录网站，刷新购物车中的数据。
-     *
-     * @param catId
-     * @param sort
-     * @param page
-     * @param pageSize
-     * @return
+     * @param itemSpecIds 分类id
+     * @return 商品数据
      */
     @ApiOperation(value = "根据规格id查询最新的商品数据", notes = "根据规格id查询最新的商品数据", httpMethod = "GET")
     @GetMapping("/refresh")
