@@ -76,7 +76,6 @@ public class Serializes {
             fos.flush();
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
         }
     }
 

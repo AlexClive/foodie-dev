@@ -194,8 +194,8 @@ public final class CookieUtils {
      * @param cookieMaxage	cookie生效的最大秒数
      * @param isEncode
      */
-    private static final void doSetCookie(HttpServletRequest request, HttpServletResponse response,
-                                          String cookieName, String cookieValue, int cookieMaxage, boolean isEncode) {
+    private static void doSetCookie(HttpServletRequest request, HttpServletResponse response,
+                                    String cookieName, String cookieValue, int cookieMaxage, boolean isEncode) {
         try {
             if (cookieValue == null) {
                 cookieValue = "";
@@ -229,8 +229,8 @@ public final class CookieUtils {
      * @param cookieMaxage	cookie生效的最大秒数
      * @param encodeString
      */
-    private static final void doSetCookie(HttpServletRequest request, HttpServletResponse response,
-                                          String cookieName, String cookieValue, int cookieMaxage, String encodeString) {
+    private static void doSetCookie(HttpServletRequest request, HttpServletResponse response,
+                                    String cookieName, String cookieValue, int cookieMaxage, String encodeString) {
         try {
             if (cookieValue == null) {
                 cookieValue = "";
@@ -259,7 +259,7 @@ public final class CookieUtils {
      * @Description: 得到cookie的域名
      * @return
      */
-    private static final String getDomainName(HttpServletRequest request) {
+    private static String getDomainName(HttpServletRequest request) {
         String domainName = null;
 
         String serverName = request.getRequestURL().toString();
@@ -292,7 +292,7 @@ public final class CookieUtils {
 
     public static String trimSpaces(String IP){//去掉IP字符串前后所有的空格
         while(IP.startsWith(" ")){
-            IP= IP.substring(1,IP.length()).trim();
+            IP= IP.substring(1).trim();
         }
         while(IP.endsWith(" ")){
             IP= IP.substring(0,IP.length()-1).trim();
@@ -304,7 +304,7 @@ public final class CookieUtils {
         boolean b = false;
         IP = trimSpaces(IP);
         if(IP.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")){
-            String s[] = IP.split("\\.");
+            String[] s = IP.split("\\.");
             if(Integer.parseInt(s[0])<255)
                 if(Integer.parseInt(s[1])<255)
                     if(Integer.parseInt(s[2])<255)

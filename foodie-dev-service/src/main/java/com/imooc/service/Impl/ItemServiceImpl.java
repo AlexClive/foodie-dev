@@ -99,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
         Map<String, Object> map = new HashMap<>();
         map.put("itemId", itemId);
         map.put("level", level);
-        // mybatis-pagehelper
+        // mybatis-page-helper
         PageHelper.startPage(page, pageSize);
         List<ItemCommentVO> list = itemsMapperCustom.queryItemComments(map);
         for (ItemCommentVO vo : list) {
@@ -135,7 +135,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<ShopCatVO> queryItemsBySpecIds(String specIds) {
-        String ids[] = specIds.split(",");
+        String[] ids = specIds.split(",");
         List<String> specIdList = new ArrayList<>();
         Collections.addAll(specIdList, ids);
         return itemsMapperCustom.queryItemsBySpecIds(specIdList);
@@ -166,7 +166,7 @@ public class ItemServiceImpl implements ItemService {
         // 1、查询库存 不推荐，导致数据库低下
         // 分布式锁 zookeeper redis
 
-        int stock = 2;
+        // int stock = 2;
 
         // 2、判断库存，是否能够减少
     /*    if(stock - buyCount < 0){

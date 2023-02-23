@@ -12,7 +12,7 @@ import java.net.*;
 public class HttpReq {
     private final String baseUrl;
     private String req;
-    private StringBuilder params = new StringBuilder();
+    private final StringBuilder params = new StringBuilder();
     Logger logger = LoggerFactory.getLogger(HttpReq.class);
 
     public HttpReq(String baseUrl) {
@@ -94,7 +94,7 @@ public class HttpReq {
             baos.write(buffer, 0, length);
         }
 
-        return new String(baos.toByteArray(), charset);
+        return baos.toString(charset);
     }
 
     private static String getCharset(String contentType) {

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         Example.Criteria userCriteria = userExample.createCriteria();
         userCriteria.andEqualTo("username", username);
         Users result = usersMapper.selectOneByExample(userExample);
-        return result == null ? false : true;
+        return result != null;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -73,7 +73,6 @@ public class UserServiceImpl implements UserService {
         Example.Criteria userCriteria = userExample.createCriteria();
         userCriteria.andEqualTo("username", username);
         userCriteria.andEqualTo("password", password);
-        Users result = usersMapper.selectOneByExample(userExample);
-        return result;
+        return usersMapper.selectOneByExample(userExample);
     }
 }

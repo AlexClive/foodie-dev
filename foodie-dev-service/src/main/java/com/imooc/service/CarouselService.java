@@ -7,9 +7,9 @@ import java.util.List;
 public interface CarouselService {
     /**
      * 查询所有轮播图列表
-     * @param isShow
-     * @return
+     * @param isShow 是否显示
+     * @return 轮播图list
      */
-    public List<Carousel> queryAll(Integer isShow);
+    List<Carousel> queryAll(Integer isShow);
 
 }

@@ -8,43 +8,43 @@ import java.util.List;
 public interface AddressService {
     /**
      * 根据用户id查询用户的收获地址
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 用户收获地址list
      */
-    public List<UserAddress> queryAll(String userId);
+    List<UserAddress> queryAll(String userId);
 
     /**
      * 用户新增地址
-     * @param addressBO
+     * @param addressBO 收获地址object
      */
-    public void addNewUserAddress(AddressBO addressBO);
+    void addNewUserAddress(AddressBO addressBO);
 
     /**
      * 用户修改地址
-     * @param addressBO
+     * @param addressBO 收获地址object
      */
-    public void updateUserAddress(AddressBO addressBO);
+    void updateUserAddress(AddressBO addressBO);
 
     /**
      * 根据用户id，地址id 删除地址数据
-     * @param userId
+     * @param userId 用户id
+     * @param addressId 地址id
      */
-    public void deleteUserAddress(String userId, String addressId);
+    void deleteUserAddress(String userId, String addressId);
 
     /**
      * 用户修改默认收获地址
-     * @param userId
-     * @param addressId
+     * @param userId 用户id
+     * @param addressId 地址id
      */
-
-    public void updateUseAddressToBeDefault(String userId,String addressId);
+    void updateUseAddressToBeDefault(String userId,String addressId);
 
     /**
      * 根据用户id和地址id，查询具体的用户地址对象信息
-     * @param userId
-     * @param addressId
-     * @return
+     * @param userId 用户id
+     * @param addressId 地址id
+     * @return 用户地址信息
      */
-    public UserAddress queryUserAddress(String userId,String addressId);
+    UserAddress queryUserAddress(String userId,String addressId);
 
 }

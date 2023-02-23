@@ -43,13 +43,13 @@ public class IPv4Utils {
      */
     public static String toString(long ip) {
         // if ip is bigger than 255.255.255.255 or smaller than 0.0.0.0
-        if (ip > 4294967295l || ip < 0) {
+        if (ip > 4294967295L || ip < 0) {
             throw new IllegalArgumentException("invalid ip");
         }
         StringBuilder ipAddress = new StringBuilder();
         for (int i = 3; i >= 0; i--) {
             int shift = i * 8;
-            ipAddress.append((ip & (0xff << shift)) >> shift);
+            ipAddress.append((ip & (0xffL << shift)) >> shift);
             if (i > 0) {
                 ipAddress.append(".");
             }

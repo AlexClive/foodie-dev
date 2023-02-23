@@ -554,17 +554,17 @@ public class DateUtil {
         int day = Integer.parseInt(getDay(date));
         int hour = minute / 60;
         int min = minute % 60;
-        dateFormat = String.valueOf(year)
+        dateFormat = year
                 +
                 (month > 9 ? String.valueOf(month) :
-                        "0" + String.valueOf(month))
+                        "0" + month)
                 +
-                (day > 9 ? String.valueOf(day) : "0" + String.valueOf(day))
+                (day > 9 ? String.valueOf(day) : "0" + day)
                 + " "
                 +
-                (hour > 9 ? String.valueOf(hour) : "0" + String.valueOf(hour))
+                (hour > 9 ? String.valueOf(hour) : "0" + hour)
                 +
-                (min > 9 ? String.valueOf(min) : "0" + String.valueOf(min))
+                (min > 9 ? String.valueOf(min) : "0" + min)
                 + "00";
         return dateFormat;
     }
@@ -630,10 +630,7 @@ public class DateUtil {
             if (date == null) {
                 return false;
             } else {
-                if (pos.getIndex() > sdf.format(date).length()) {
-                    return false;
-                }
-                return true;
+                return pos.getIndex() <= sdf.format(date).length();
             }
         } catch (Exception e) {
             e.printStackTrace();

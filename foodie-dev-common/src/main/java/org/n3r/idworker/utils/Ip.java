@@ -24,7 +24,7 @@ public class Ip {
             byte[] address = localHostLANAddress.getAddress();
             lip =  ((address [0] & 0xFFL) << (3*8)) +
                     ((address [1] & 0xFFL) << (2*8)) +
-                    ((address [2] & 0xFFL) << (1*8)) +
+                    ((address [2] & 0xFFL) << (8)) +
                     (address [3] &  0xFFL);
         } catch (Exception e) {
             logger.error("get ipv4 failed ", e);

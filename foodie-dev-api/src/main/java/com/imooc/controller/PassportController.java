@@ -69,10 +69,10 @@ public class PassportController {
         }
 
         // 5、 实现注册
-        userService.createUser(userBO);
+        Users users = userService.createUser(userBO);
         // TODO 生成用户token，存入redis会话
         // TODO 同步购物车数据
-        return IMOOCJSONResult.ok();
+        return IMOOCJSONResult.ok(users);
 
     }
 
