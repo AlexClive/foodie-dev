@@ -6,7 +6,7 @@
 spring:
   datasource: # 数据源的相关配置
     type: com.zaxxer.hikari.HikariDataSource      # 数据源类型  hikariCp
-    driver-class-name: com.mysql.jdbc.Driver      # mysql 驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver      # mysql 驱动
     url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&serverTimezone=UTC
     username: root
     password: Zxr1234!@#$
@@ -19,6 +19,10 @@ spring:
       pool-name: DateSourceHikariCp  #链接池名字
       max-lifetime: 1800000          #链接池生命时长（毫秒），超时而且没有被释放（retired），默认：30分钟 1800000ms
       connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 512000 #文件上传大小限制为500kb
+      max-request-size: 512000 #请求最大500KB
 
 
 ################################

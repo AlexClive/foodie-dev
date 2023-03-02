@@ -49,6 +49,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!--  // [3]打包war 移除自带的tomcat-->
+            <exclusions>
+                <exclusion>
+                    <groupId>spring-boot-starter-tomcat</groupId>
+                    <artifactId>org.springframework.boot</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -130,7 +137,19 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
 
+        <!--  // [3]打包war-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
+<!--
+scp -r root@58.222.34.57: /usr/local/ E:/zhangxuerong/Downloads/nginx-1.22.1.tar.gz
 
+scp E:/zhangxuerong/Downloads/nginx-1.22.1.tar.gz  root@58.222.34.57:/usr/local/
+
+-->
 </project>
