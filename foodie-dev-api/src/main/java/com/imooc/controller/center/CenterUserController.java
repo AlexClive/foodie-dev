@@ -3,12 +3,10 @@ package com.imooc.controller.center;
 import com.imooc.controller.BaseController;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.center.CenterUserBO;
+import com.imooc.pojo.vo.UsersVO;
 import com.imooc.resource.FileUpload;
 import com.imooc.service.center.CenterUserService;
-import com.imooc.utils.CookieUtils;
-import com.imooc.utils.DateUtil;
-import com.imooc.utils.IMOOCJSONResult;
-import com.imooc.utils.JsonUtils;
+import com.imooc.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,15 +47,19 @@ public class CenterUserController extends BaseController {
             @RequestBody @Valid CenterUserBO centerUserBO,
             BindingResult result,
             HttpServletRequest request,
-            HttpServletResponse response) {
+            HttpServletResponse response) throws NoSuchAlgorithmException {
         if (result.hasErrors()) {
             Map<String, String> errorMsg = getErrors(result);
             return IMOOCJSONResult.errorMap(errorMsg);
         }
+        centerUserBO.setPassword(MD5Utils.getMD5Str(centerUserBO.getPassword()));
         Users UserResult = setNullProperty(centerUserService.updateUserInfo(userId, centerUserBO));
+        // 后续要改，增加令牌token,整合redis
+        UsersVO usersVO = conventUsersVO(UserResult);
         CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(UserResult), true);
-        // TODO 后续要改，增加令牌token,整合redis
+                JsonUtils.objectToJson(usersVO), true);
+
+
         return IMOOCJSONResult.ok(UserResult);
     }
 
@@ -131,9 +134,10 @@ public class CenterUserController extends BaseController {
         String finalUserFaceUrl = imageServiceUrl + uploadPathPrefix + "?" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
         // 更新用户头像到数据库
         Users userResult = centerUserService.updateUserFace(userId, finalUserFaceUrl);
+        // 增加令牌token,整合redis
+        UsersVO usersVO = conventUsersVO(userResult);
         CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
-        // TODO 后续要改，增加令牌token,整合redis
+                JsonUtils.objectToJson(usersVO), true);
         return IMOOCJSONResult.ok();
     }
 

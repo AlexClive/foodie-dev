@@ -6,7 +6,9 @@ import com.imooc.mapper.OrderItemsMapper;
 import com.imooc.mapper.OrderStatusMapper;
 import com.imooc.mapper.OrdersMapper;
 import com.imooc.pojo.*;
+import com.imooc.pojo.bo.ShopCatBO;
 import com.imooc.pojo.bo.SubmitOrderBO;
+import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.AddressService;
 import com.imooc.service.ItemService;
 import com.imooc.service.OrderServer;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderServerImpl implements OrderServer {
@@ -38,7 +42,7 @@ public class OrderServerImpl implements OrderServer {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public String createOder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOder(List<ShopCatBO> shopCatBOList, SubmitOrderBO submitOrderBO) {
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
         String itemSpecIds = submitOrderBO.getItemSpecIds();
@@ -46,11 +50,11 @@ public class OrderServerImpl implements OrderServer {
         String leftMsg = submitOrderBO.getLeftMsg();
         // 包邮费用设置为0
         Integer postAmount = 0;
-        String oderId = sid.nextShort();
+        String orderId = sid.nextShort();
         UserAddress address = addressService.queryUserAddress(userId, addressId);
         // 1、新订单数据保存
         Orders newOrder = new Orders();
-        newOrder.setId(oderId);
+        newOrder.setId(orderId);
         newOrder.setUserId(userId);
         newOrder.setReceiverName(address.getReceiver());
         newOrder.setReceiverMobile(address.getMobile());
@@ -69,9 +73,12 @@ public class OrderServerImpl implements OrderServer {
         String[] itemSpecIdArr = itemSpecIds.split(",");
         int totalAmount = 0; //商品原价累计
         int realPayAmount = 0;// 优惠后的实际价格累计
+        List<ShopCatBO> toBeRemovedShopCatdList = new ArrayList<>();
         for (String itemSpecId : itemSpecIdArr) {
-            // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 1;
+            // 整合redis后，商品购买的数量重新从redis的购物车中获取
+            ShopCatBO cartItem = getBuyCountsFromShopCart(shopCatBOList,itemSpecId);
+            int buyCounts = cartItem.getBuyCounts();
+            toBeRemovedShopCatdList.add(cartItem);
             // 2.1根据规格id，查询规格的具体信息
             ItemsSpec itemsSpec = itemService.queryItemSpecById(itemSpecId);
             totalAmount += itemsSpec.getPriceNormal() * buyCounts;
@@ -86,7 +93,7 @@ public class OrderServerImpl implements OrderServer {
             String subOrderId = sid.nextShort();
             OrderItems subOrderItem = new OrderItems();
             subOrderItem.setId(subOrderId);
-            subOrderItem.setOrderId(oderId);
+            subOrderItem.setOrderId(orderId);
             subOrderItem.setItemId(itemId);
             subOrderItem.setItemName(item.getItemName());
             subOrderItem.setItemImg(imgUrl);
@@ -103,10 +110,23 @@ public class OrderServerImpl implements OrderServer {
         ordersMapper.insert(newOrder);
         // 3、保存订单状态表
         OrderStatus waitPayOrderStatus = new OrderStatus();
-        waitPayOrderStatus.setOrderId(oderId);
+        waitPayOrderStatus.setOrderId(orderId);
         waitPayOrderStatus.setOrderStatus(OderStatuEnum.WAII_PAY.type);
         waitPayOrderStatus.setCreatedTime(new Date());
         orderStatusMapper.insert(waitPayOrderStatus);
-        return oderId;
+        OrderVO orderVO = new OrderVO();
+
+        orderVO.setOrderId(orderId);
+        orderVO.setToBeRemovedShopCatdList(toBeRemovedShopCatdList);
+        return orderVO;
+    }
+
+    private ShopCatBO getBuyCountsFromShopCart(List<ShopCatBO> shopCatBOList,String specId){
+        for(ShopCatBO cart:shopCatBOList){
+            if(cart.getSpecId().equals(specId)){
+                return cart;
+            }
+        }
+        return null;
     }
 }

@@ -19,11 +19,17 @@ spring:
       pool-name: DateSourceHikariCp  #链接池名字
       max-lifetime: 1800000          #链接池生命时长（毫秒），超时而且没有被释放（retired），默认：30分钟 1800000ms
       connection-test-query: SELECT 1
+  redis:
+    password: Zxr1234!@#$
+    database: 1
+    host: 58.222.34.57
+    port: 6379
   servlet:
     multipart:
       max-file-size: 512000 #文件上传大小限制为500kb
       max-request-size: 512000 #请求最大500KB
-
+  session:
+    store-type: redis
 
 ################################
 #

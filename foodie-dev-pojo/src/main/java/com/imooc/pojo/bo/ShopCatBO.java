@@ -17,6 +17,8 @@ public class ShopCatBO {
     private String priceDiscount;
     @ApiModelProperty(value = "价格正常",name="priceNormal",example = "150",required = true)
     private String priceNormal;
+    @ApiModelProperty(value = "规格id",name="itemId",example = "cake-1002",required = true)
+    private String itemId;
 
     public String getItemImgUrl() {
         return itemImgUrl;
@@ -72,6 +74,14 @@ public class ShopCatBO {
 
     public void setPriceNormal(String priceNormal) {
         this.priceNormal = priceNormal;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     @Override
